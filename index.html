@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong Game</title>
+    <link rel="stylesheet" href="pong.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="screen menu-screen active" id="menuScreen">
+            <div class="menu-header">
+                <p class="eyebrow">Cyber Pong Arena</p>
+                <h1>Pong Game</h1>
+            </div>
+
+            <div class="primary-menu active" id="primaryMenu">
+                <button type="button" class="menu-tile" data-menu-target="modePage">Game Mode</button>
+                <button type="button" class="menu-tile" data-menu-target="settingsPage">Game Settings</button>
+                <button type="button" class="menu-tile" data-menu-target="weaponPage">Weapon Skins</button>
+                <button type="button" class="menu-tile" data-menu-target="characterPage">Character System</button>
+                <button type="button" class="start-button" id="startGameBtn">Start Game</button>
+            </div>
+
+            <section class="submenu-page" id="modePage">
+                <button type="button" class="secondary-button submenu-back">Back</button>
+                <section class="menu-panel">
+                    <h2>Game Mode</h2>
+                    <div class="mode-switch" aria-label="Game mode">
+                        <button type="button" class="mode-button active" id="singlePlayerBtn">1P</button>
+                        <button type="button" class="mode-button" id="twoPlayerBtn">2P</button>
+                    </div>
+                    <p class="panel-note">3 rounds per match. Each round is first to 6, win by 2.</p>
+                </section>
+            </section>
+
+            <section class="submenu-page" id="settingsPage">
+                <button type="button" class="secondary-button submenu-back">Back</button>
+                <section class="menu-panel">
+                    <h2>Game Settings</h2>
+                    <div class="option-group">
+                        <span class="option-title">Arena</span>
+                        <div class="choice-row" id="arenaChoices"></div>
+                    </div>
+                    <label class="toggle-row">
+                        <span>Hit sound</span>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </label>
+                    <label class="toggle-row">
+                        <span>Battle music</span>
+                        <input type="checkbox" id="musicToggle" checked>
+                    </label>
+                </section>
+            </section>
+
+            <section class="submenu-page" id="weaponPage">
+                <button type="button" class="secondary-button submenu-back">Back</button>
+                <section class="menu-panel wide">
+                    <h2>Weapon Skins</h2>
+                    <span class="unlock-status" id="unlockStatus"></span>
+                    <div class="skin-columns">
+                        <div class="option-group">
+                            <span class="option-title">Player 1 Weapon</span>
+                            <div class="choice-row" id="playerSkinChoices"></div>
+                        </div>
+                        <div class="option-group" id="playerTwoSkinGroup">
+                            <span class="option-title">Player 2 Weapon</span>
+                            <div class="choice-row" id="playerTwoSkinChoices"></div>
+                        </div>
+                    </div>
+                    <p class="panel-note">The glowing weapon is the hit zone. Longer weapons have a longer rebound boundary.</p>
+                </section>
+            </section>
+
+            <section class="submenu-page" id="characterPage">
+                <button type="button" class="secondary-button submenu-back">Back</button>
+                <div class="game-topbar character-topbar">
+                    <div>
+                        <p class="eyebrow">Original Chibi Digital Fighters</p>
+                        <h1>Characters</h1>
+                    </div>
+                    <span class="unlock-status" id="characterWinStatus"></span>
+                </div>
+
+                <div class="character-grid">
+                    <article class="character-card">
+                        <div class="fighter-portrait level-1" id="p1Portrait">
+                            <div class="fighter-aura"></div>
+                            <div class="fighter-hair"></div>
+                            <div class="fighter-face"></div>
+                            <div class="fighter-eye left"></div>
+                            <div class="fighter-eye right"></div>
+                            <div class="fighter-body"></div>
+                            <div class="fighter-sword"></div>
+                        </div>
+                        <h2>Player 1 Character</h2>
+                        <p id="p1CharacterLevel">Level 1</p>
+                        <div class="choice-row" id="playerCharacterChoices"></div>
+                    </article>
+
+                    <article class="character-card">
+                        <div class="fighter-portrait rival level-1" id="p2Portrait">
+                            <div class="fighter-aura"></div>
+                            <div class="fighter-hair"></div>
+                            <div class="fighter-face"></div>
+                            <div class="fighter-eye left"></div>
+                            <div class="fighter-eye right"></div>
+                            <div class="fighter-body"></div>
+                            <div class="fighter-sword"></div>
+                        </div>
+                        <h2>Player 2 Character</h2>
+                        <p id="p2CharacterLevel">Level 1</p>
+                        <div class="choice-row" id="playerTwoCharacterChoices"></div>
+                    </article>
+                </div>
+            </section>
+        </section>
+
+        <section class="screen game-screen" id="gameScreen">
+            <div class="game-topbar">
+                <button type="button" class="secondary-button" id="backToMenuBtn">Menu</button>
+                <div class="scoreboard">
+                    <div class="player-score">
+                        <span class="label" id="leftLabel">Player 1</span>
+                        <span class="score" id="playerScore">0</span>
+                        <span class="rounds" id="playerRounds">Rounds 0</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="match-info">
+                        <span id="roundLabel">Round 1 / 3</span>
+                        <span id="matchStatus">First to 6, win by 2</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="computer-score">
+                        <span class="label" id="rightLabel">Computer</span>
+                        <span class="score" id="computerScore">0</span>
+                        <span class="rounds" id="computerRounds">Rounds 0</span>
+                    </div>
+                </div>
+                <button type="button" class="secondary-button" id="restartBtn">Restart</button>
+            </div>
+
+            <div class="canvas-wrap">
+                <canvas id="gameCanvas" width="800" height="400"></canvas>
+                <div class="pause-overlay" id="pauseOverlay">Paused</div>
+            </div>
+
+            <div class="fighter-hud" id="fighterHud">
+                <div class="mini-fighter" id="p1MiniFighter"></div>
+                <div class="mini-fighter rival" id="p2MiniFighter"></div>
+            </div>
+
+            <div class="controls">
+                <p id="controlText"><strong>Controls:</strong> Move mouse up/down, or use W/S or Arrow Keys for Player 1</p>
+                <p><strong>Pause:</strong> Press Space</p>
+                <p><strong>Goal:</strong> Win 3 rounds. Each round is first to 6 with a 2-point lead.</p>
+            </div>
+        </section>
+    </main>
+    <script src="pong.js"></script>
+</body>
+</html>
